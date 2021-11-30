@@ -1,0 +1,66 @@
+.386 
+.model flat, stdcall 
+.stack 4096 
+ExitProcess PROTO, dwExitCode: DWORD 
+ 
+.data 
+ ; define your variables here 
+ fact_input dword  12 
+ fact_result dword  0 
+ fibonacci dword  12 
+ fib_sequence dword  0 
+ 
+.code 
+ 
+main PROC
+ 
+ ; calculate factorial
+
+ sub esp, fibonacci
+ 
+ mov eax, fact_input
+ mov ecx, fact_input
+ dec ecx
+
+ top:
+ dec fact_input
+ mul fact_input
+ dec ecx
+ JNZ top
+
+ mov fact_result, eax
+
+ sub eax, eax ; zero out
+ mov ecx, fibonacci ; counter
+ mov ebx, esp ; address
+ mov eax, fib_sequence ; index
+ sub esi,esi 
+
+ ; fibonacci
+
+ mov [ebx + esi * 4], eax ; zero index to set at 0
+ inc eax
+ inc esi
+ mov [ebx + esi * 4], eax ; one index to set at 1
+ inc esi
+
+ dec ecx 
+ dec ecx ;get to index 2 or in this case 10
+
+ top2:
+ mov eax, [ebx + esi * 4 - 8]
+
+ mov edx, [ebx + esi * 4 - 4]
+ 
+
+ add eax, edx ;add last two values to get the following value
+ mov [ebx + esi * 4], eax
+ inc esi
+ dec ecx ; dec exc to zero out and stop loop
+ JNZ top2
+ 
+
+ 
+ INVOKE ExitProcess, 0 
+main ENDP 
+END main
